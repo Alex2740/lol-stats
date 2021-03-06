@@ -9,33 +9,40 @@
 </head>
 <body>
     <a href="index.html">Accueil</a>
-    <h1>Caitlyn</h1>
+    <form>
+        <select name="champ_selec" id="champ_selec" onChange="Update_Cahmpion()">
+        </select>
+    </form>
+    <h1 id="name"></h1>
     <h2>Stats</h2>
-    <ul>
-        <li>HP</li>
-        <li>HP per level</li>
-        <li>MP</li>
-        <li>MP per level</li>
-        <li>Movespeed</li>
-        <li>Armor</li>
-        <li>Armor per level</li>
-        <li>Spellblock</li>
-        <li>Spellblock per level</li>
-        <li>Attack Range</li>
-        <li>HP Regen</li>
-        <li>HP Regen per level</li>
-        <li>MP Regen</li>
-        <li>MP Regen per level</li>
-        <li>Crit</li>
-        <li>Crit per level</li>
-        <li>Attack Damage</li>
-        <li>Attack Damage level</li>
-        <li>Attack Speed</li>
-        <li>Attack Speed level</li>
+    <ul id="stats">
     </ul>
 
     <script type="text/javascript">
-        var Caitlyn = $.getJSON( "./src/dragontail 10.24.1/data/en_US/champion/Caitlyn.json");
+        var champions = $.getJSON( "./src/dragontail 10.24.1/data/en_US/champion.json", function( data ) {
+            $.each(data.data, function(key, value) {
+                $( "<option/>", {
+                    html: key,
+                    value: key
+                }).appendTo( "#champ_selec");
+            });
+        });
+        
+        function Update_Cahmpion() {
+            var name = $("#champ_selec > option:selected").attr('value');
+            $( "#stats" ).empty();
+            $("#name").html(name);
+            var champion = $.getJSON( "./src/dragontail 10.24.1/data/en_US/champion/" + name + ".json", function( data ) {
+                $.each(data.data[name].stats, function(key, value) {
+
+                    $( "<li/>", {
+                        "class": key,
+                        html: "<b>" + key + "</b>: " + value
+                    }).appendTo( "#stats" );
+                });
+            });
+        };
+        
     </script>
 </body>
 </html>
